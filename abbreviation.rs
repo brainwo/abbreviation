@@ -11,7 +11,7 @@ fn main() {
     word_list
         .iter()
         .filter(|&long| word_contains(abbv, long))
-        .filter(|word| word.len() < 7)
+        .filter(|word| word.len() < 8)
         .for_each(|word| {
             println!("{word}");
 
@@ -30,12 +30,14 @@ fn main() {
 
 fn word_contains(abbv: &str, long: &str) -> bool {
     let mut next = 0;
+    let mut long = long;
     abbv.chars()
         .filter(|c| {
             let mut result = false;
-            for (i, c_long) in long[next..].chars().enumerate() {
+            for (i, c_long) in long.get(next..).unwrap_or("").chars().enumerate() {
                 if c == &c_long {
-                    next = i;
+                    long = long.get(next..).unwrap_or("");
+                    next = i + 1;
                     result = true;
                 }
             }
